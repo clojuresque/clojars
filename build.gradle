@@ -1,0 +1,69 @@
+group = 'clojuresque'
+version = '1.0.0-SNAPSHOT'
+
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+apply {
+    plugin 'signing'
+    plugin 'maven'
+    plugin 'groovy'
+}
+
+repositories {
+    maven { url "http://127.0.0.1:8080/repository/internal" }
+    mavenCentral()
+}
+
+dependencies {
+    compile gradleApi()
+    // Workaround for milestone4
+    compile fileTree(dir: "${gradle.gradleHomeDir}/lib/plugins", include: '**/*.jar')
+    groovy localGroovy()
+}
+
+configurations {
+    deployerJars
+}
+
+dependencies {
+    deployerJars 'org.apache.maven.wagon:wagon-http-lightweight:2.2'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            configuration = configurations.deployerJars
+            repository(url: "https://clojars.org/repo") {
+                authentication(
+                    userName: project.properties["clojuresque.clojars.username"],
+                    password: project.properties["clojuresque.clojars.password"]
+                )
+            }
+            pom.project {
+                licenses {
+                    license {
+                        name 'MIT License'
+                        url 'http://opensource.org/licenses/MIT'
+                        distribution 'repo'
+                    }
+                }
+                description "A Clojars plugin for the Gradle build system"
+                url "http://bitbucket.org/clojuresque/clojars"
+                scm {
+                    connection 'scm:hg:hg@bitbucket.org:clojuresque/clojars'
+                    developerConnection 'scm:hg:hg@bitbucket.org:clojuresque/clojars'
+                    url 'hg@bitbucket.org:clojuresque/clojars'
+                }
+            }
+            beforeDeployment { signing.signPom(it) }
+        }
+    }
+}
+
+signing {
+    sign configurations.archives
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = "1.0"
+}
