@@ -14,18 +14,18 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    compile gradleApi()
-    // Workaround for milestone4
-    compile fileTree(dir: "${gradle.gradleHomeDir}/lib/plugins", include: '**/*.jar')
-    groovy localGroovy()
-}
-
 configurations {
     deployerJars
 }
 
 dependencies {
+    compile gradleApi()
+    // Workaround for milestone4
+    compile fileTree(dir: "${gradle.gradleHomeDir}/lib/plugins", include: '**/*.jar')
+    groovy localGroovy()
+
+    testCompile 'org.spockframework:spock-core:0.6-groovy-1.8'
+
     deployerJars 'org.apache.maven.wagon:wagon-http-lightweight:2.2'
 }
 
