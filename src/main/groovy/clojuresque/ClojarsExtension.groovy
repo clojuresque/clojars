@@ -47,7 +47,7 @@ public class ClojarsExtension {
 
         if (password == null) {
             if (p.hasProperty("clojuresque.clojars.password")) {
-                username = p["clojuresque.clojars.password"]
+                password = p["clojuresque.clojars.password"]
             } else {
                 throw new InvalidUserDataException("Clojars password missing!")
             }
