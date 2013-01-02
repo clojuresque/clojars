@@ -70,7 +70,7 @@ public class ClojarsExtension {
                         password: this.password
                     )
                 }
-                p.configure(pom.project, projectSpec)
+                p.configure(pom, projectSpec)
                 if (p.hasProperty("signing")) {
                     beforeDeployment { p.signing.signPom(it) }
                 }
