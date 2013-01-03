@@ -20,36 +20,32 @@ support. It allows compilation with automatic namespace recognition. The
 plugin is based on the Java plugin and hooks into the standard configurations
 and archives.
 
+The [Clojars][cr] sub plugin adds some configuration convenience to
+deploy to the “clojars” community repository. It sets up a https transport
+for any given upload task. A convenience method for repository definition
+is also provided.
+
 ## Usage
 
-Create a `build.gradle` script in the root directory of your project. *Note
-that gradle derives the project name from the name of this directory!*
-
-    buildscript {
-        repositories {
-            maven { url 'http://clojars.org/repo' }
-        }
-        dependencies {
-            classpath 'clojuresque:clojars:1.0.0'
-        }
-    }
-    
-    group = 'example.group'
-    version = '1.0.0'
-    
-    apply plugin: 'clojure-clojars'
-    
-    repositories {
-        clojars.repo()
-    }
-    
-    dependencies {
-        compile 'org.clojure:clojure:1.4.0'
-    }
+    apply plugin: 'clojars'
     
     clojars {
         username = "your-clojars-login"
         password = "your-clojars-password"
+
+        repo(repositories)
+        deploy(uploadArchives) {
+            project {
+                licenses {
+                    license {
+                        name 'MIT License'
+                        url 'http://opensource.org/licenses/MIT'
+                        distribution 'repo'
+                    }
+                }
+                …
+            }
+        }
     }
 
 -- 
