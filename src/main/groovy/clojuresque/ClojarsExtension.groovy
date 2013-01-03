@@ -26,6 +26,7 @@ package clojuresque
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
 import org.gradle.api.tasks.Upload
+import org.gradle.api.artifacts.dsl.RepositoryHandler
 
 import groovy.lang.Closure
 
@@ -33,6 +34,10 @@ public class ClojarsExtension {
     def String username = null
     def String password = null
     def String url      = null
+
+    void repo(RepositoryHandler repositories) {
+        repositories.maven { url "http://clojars.org/repo" }
+    }
 
     void deploy(Upload upload, Closure projectSpec={}) {
         Project p = upload.project
