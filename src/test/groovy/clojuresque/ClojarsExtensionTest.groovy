@@ -34,7 +34,7 @@ public class ClojarsExtensionTest extends Specification {
     def Project project = ProjectBuilder.builder().build()
 
     def setup() {
-        project.apply plugin: ClojarsPlugin
+        project.apply plugin: "clojars"
     }
 
     def "extension is in sane state"() {
