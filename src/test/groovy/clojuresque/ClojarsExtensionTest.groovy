@@ -47,25 +47,27 @@ public class ClojarsExtensionTest extends Specification {
     def "deploy with empty user name fails"() {
         when:
         def upload = project.tasks.add(name: "upload", type: Upload)
+        upload.enabled = true
         project.clojars {
             password = "password"
             deploy(upload)
         }
 
         then:
-        thrown(InvalidUserDataException)
+        upload.enabled == false
     }
 
     def "deploy with empty password fails"() {
         when:
         def upload = project.tasks.add(name: "upload", type: Upload)
+        upload.enabled = true
         project.clojars {
             username = "user"
             deploy(upload)
         }
 
         then:
-        thrown(InvalidUserDataException)
+        upload.enabled == false
     }
 
     def "deploy with empty URL uses the default"() {

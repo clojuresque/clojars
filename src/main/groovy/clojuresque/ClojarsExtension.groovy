@@ -46,7 +46,8 @@ public class ClojarsExtension {
             if (p.hasProperty("clojuresque.clojars.username")) {
                 username = p["clojuresque.clojars.username"]
             } else {
-                throw new InvalidUserDataException("Clojars user name missing!")
+                upload.enabled = false
+                return
             }
         }
 
@@ -54,7 +55,8 @@ public class ClojarsExtension {
             if (p.hasProperty("clojuresque.clojars.password")) {
                 password = p["clojuresque.clojars.password"]
             } else {
-                throw new InvalidUserDataException("Clojars password missing!")
+                upload.enabled = false
+                return
             }
         }
 
