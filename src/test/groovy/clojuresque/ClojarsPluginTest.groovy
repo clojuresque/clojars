@@ -23,13 +23,12 @@
 
 package clojuresque
 
-import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 
 import spock.lang.Specification
 
 public class ClojarsPluginTest extends Specification {
-    def Project project = ProjectBuilder.builder().build()
+    def project = ProjectBuilder.builder().build()
 
     def setup() {
         project.apply plugin: "clojars"
