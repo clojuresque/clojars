@@ -31,57 +31,62 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler
 import groovy.lang.Closure
 
 public class ClojarsExtension {
-    def String username = null
-    def String password = null
-    def String url      = null
+    def project
+
+    ClojarsExtension(p) {
+        project = p
+    }
 
     void repo(RepositoryHandler repositories) {
         repositories.maven { url "http://clojars.org/repo" }
     }
 
-    void deploy(Upload upload, Closure projectSpec={}) {
-        Project p = upload.project
+    def credentials(Map creds=[:]) {
+        def defaults = [
+            username: null,
+            password: null,
+            url:      "https://clojars.org/repo"
+        ]
 
-        if (username == null) {
-            if (p.hasProperty("clojuresque.clojars.username")) {
-                username = p["clojuresque.clojars.username"]
-            } else {
-                upload.enabled = false
-                return
-            }
+        if (project.hasProperty("clojuresque.clojars.username"))
+            defaults.username = project["clojuresque.clojars.username"]
+
+        if (project.hasProperty("clojuresque.clojars.password"))
+            defaults.password = project["clojuresque.clojars.password"]
+
+        if (project.hasProperty("clojuresque.clojars.url"))
+            defaults.url = project["clojuresque.clojars.url"]
+
+        defaults.plus(creds)
+    }
+
+    void deploy(Map cs=[:], Upload upload, Closure projectSpec={}) {
+        def creds = credentials(cs)
+
+        if (creds.username == null) {
+            upload.enabled = false
+            return
         }
 
-        if (password == null) {
-            if (p.hasProperty("clojuresque.clojars.password")) {
-                password = p["clojuresque.clojars.password"]
-            } else {
-                upload.enabled = false
-                return
-            }
+        if (creds.password == null) {
+            upload.enabled = false
+            return
         }
 
-        if (url == null) {
-            if (p.hasProperty("clojuresque.clojars.url")) {
-                url = p["clojuresque.clojars.url"]
-            } else {
-                url = "https://clojars.org/repo"
-            }
-        }
-
-        p.afterEvaluate {
+        project.afterEvaluate {
             upload.repositories {
                 mavenDeployer {
                     configuration =
-                        p.configurations.clojuresqueClojarsDeployerJars
-                    repository(url: this.url) {
+                        project.configurations.clojuresqueClojarsDeployerJars
+                    repository(url: creds.url) {
                         authentication(
-                            userName: this.username,
-                            password: this.password
+                            userName: creds.username,
+                            password: creds.password
                         )
                     }
-                    p.configure(pom, projectSpec)
-                    if (p.hasProperty("signing")) {
-                        beforeDeployment { p.signing.signPom(it) }
+                    project.configure(pom, projectSpec)
+                    if (project.hasProperty("signing")) {
+                        beforeDeployment { project.signing.signPom(it) }
                     }
                 }
             }

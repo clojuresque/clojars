@@ -28,6 +28,7 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.Upload
 import org.gradle.testfixtures.ProjectBuilder
 
+import spock.lang.Ignore
 import spock.lang.Specification
 
 public class ClojarsExtensionTest extends Specification {
@@ -37,11 +38,53 @@ public class ClojarsExtensionTest extends Specification {
         project.apply plugin: "clojars"
     }
 
-    def "extension is in sane state"() {
+    def "username is picked up by credentials"() {
         expect:
-        project.clojars.username == null
-        project.clojars.password == null
-        project.clojars.url      == null
+        project.
+            clojars.
+            credentials(username: "user").
+            username == "user"
+    }
+
+    def "password is picked up by credentials"() {
+        expect:
+        project.
+            clojars.
+            credentials(password: "passw0rd").
+            password == "passw0rd"
+    }
+
+    def "url is picked up by credentials"() {
+        expect:
+        project.
+            clojars.
+            credentials(url: "http://kotka.de").
+            url == "http://kotka.de"
+    }
+
+    def "an empty URL turns into clojars default"() {
+        expect:
+        project.
+            clojars.
+            credentials().
+            url == "https://clojars.org/repo"
+    }
+
+    def "deploy picks up properties"() {
+        given:
+        def creds = [
+            username: "user",
+            password: "passw0rd",
+            url:      "http://kotka.de"
+        ]
+
+        when:
+        project["clojuresque.clojars.username"] = creds.username
+        project["clojuresque.clojars.password"] = creds.password
+        project["clojuresque.clojars.url"]      = creds.url
+
+        then:
+        project.clojars.credentials() == creds
     }
 
     def "deploy with empty user name fails"() {
@@ -49,8 +92,7 @@ public class ClojarsExtensionTest extends Specification {
         def upload = project.tasks.add(name: "upload", type: Upload)
         upload.enabled = true
         project.clojars {
-            password = "password"
-            deploy(upload)
+            deploy(upload, password: "password")
         }
 
         then:
@@ -62,52 +104,33 @@ public class ClojarsExtensionTest extends Specification {
         def upload = project.tasks.add(name: "upload", type: Upload)
         upload.enabled = true
         project.clojars {
-            username = "user"
-            deploy(upload)
+            deploy(upload, username: "user")
         }
 
         then:
         upload.enabled == false
     }
 
-    def "deploy with empty URL uses the default"() {
+    def "deploy with credentials does not fail"() {
         when:
         def upload = project.tasks.add(name: "upload", type: Upload)
+        upload.enabled = true
         project.clojars {
-            username = "user"
-            password = "password"
-            deploy(upload)
+            deploy(upload, username: "user", password: "passw0rd")
         }
 
         then:
-        project.clojars.url != null
-        project.clojars.url.equals("https://clojars.org/repo")
+        upload.enabled == true
     }
 
-    def "deploy picks up properties"() {
-        when:
-        def upload = project.tasks.add(name: "upload", type: Upload)
-        project["clojuresque.clojars.username"] = "user"
-        project["clojuresque.clojars.password"] = "password"
-        project["clojuresque.clojars.url"]      = "https://clojars.org/repo"
-        project.clojars.deploy(upload)
-
-        then:
-        project.clojars.username != null
-        project.clojars.username.equals("user")
-        project.clojars.password != null
-        project.clojars.password.equals("password")
-        project.clojars.url      != null
-        project.clojars.url.equals("https://clojars.org/repo")
-    }
-
+    @Ignore
     def "deploy configures pom"() {
         when:
         def upload = project.tasks.add(name: "upload", type: Upload)
         project.clojars {
             username = "user"
             password = "password"
-            deploy(upload) {
+            deploy(upload, username: "user", password: "passw0rd") {
                 project {
                     description "foobar"
                 }

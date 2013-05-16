@@ -33,7 +33,7 @@ public class ClojarsPlugin implements Plugin<Project> {
     void apply(Project project) {
         project.apply plugin: MavenPlugin
 
-        project.extensions.create("clojars", ClojarsExtension.class)
+        project.extensions.create("clojars", ClojarsExtension.class, project)
 
         project.configurations {
             clojuresqueClojarsDeployerJars
