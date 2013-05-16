@@ -23,7 +23,7 @@
 
 package clojuresque.clojars
 
-public class ClojarsExtension {
+class ClojarsExtension {
     def project
 
     ClojarsExtension(p) {

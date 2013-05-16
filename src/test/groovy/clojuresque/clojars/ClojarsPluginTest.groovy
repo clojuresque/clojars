@@ -27,7 +27,7 @@ import org.gradle.testfixtures.ProjectBuilder
 
 import spock.lang.Specification
 
-public class ClojarsPluginTest extends Specification {
+class ClojarsPluginTest extends Specification {
     def project = ProjectBuilder.builder().build()
 
     def "extension is installed by the plugin"() {

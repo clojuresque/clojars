@@ -29,7 +29,7 @@ import org.gradle.testfixtures.ProjectBuilder
 import spock.lang.Ignore
 import spock.lang.Specification
 
-public class ClojarsExtensionTest extends Specification {
+class ClojarsExtensionTest extends Specification {
     def project = ProjectBuilder.builder().build()
 
     def setup() {
