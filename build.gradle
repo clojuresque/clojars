@@ -20,9 +20,7 @@ configurations {
 
 dependencies {
     compile gradleApi()
-    // Workaround for milestone4
-    compile fileTree(dir: "${gradle.gradleHomeDir}/lib/plugins", include: '**/*.jar')
-    groovy localGroovy()
+    compile localGroovy()
 
     testCompile 'org.spockframework:spock-core:0.6-groovy-1.8'
 
@@ -65,5 +63,5 @@ signing {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = "1.0"
+    gradleVersion = "1.6"
 }
