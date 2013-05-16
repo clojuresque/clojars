@@ -68,18 +68,21 @@ public class ClojarsExtension {
             }
         }
 
-        upload.repositories {
-            mavenDeployer {
-                configuration = p.configurations.clojuresqueClojarsDeployerJars
-                repository(url: this.url) {
-                    authentication(
-                        userName: this.username,
-                        password: this.password
-                    )
-                }
-                p.configure(pom, projectSpec)
-                if (p.hasProperty("signing")) {
-                    beforeDeployment { p.signing.signPom(it) }
+        p.afterEvaluate {
+            upload.repositories {
+                mavenDeployer {
+                    configuration =
+                        p.configurations.clojuresqueClojarsDeployerJars
+                    repository(url: this.url) {
+                        authentication(
+                            userName: this.username,
+                            password: this.password
+                        )
+                    }
+                    p.configure(pom, projectSpec)
+                    if (p.hasProperty("signing")) {
+                        beforeDeployment { p.signing.signPom(it) }
+                    }
                 }
             }
         }
