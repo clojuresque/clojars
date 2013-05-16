@@ -30,17 +30,19 @@ import spock.lang.Specification
 public class ClojarsPluginTest extends Specification {
     def project = ProjectBuilder.builder().build()
 
-    def setup() {
-        project.apply plugin: "clojars"
-    }
-
     def "extension is installed by the plugin"() {
+        given:
+        project.apply plugin: "clojuresque-clojars"
+
         expect:
         project.hasProperty("clojars")
         project.clojars instanceof ClojarsExtension
     }
 
     def "deployer jar configuration is installed"() {
+        given:
+        project.apply plugin: "clojuresque-clojars"
+
         expect:
         project.configurations["clojuresqueClojarsDeployerJars"]
     }
