@@ -21,23 +21,27 @@
  * THE SOFTWARE.
  */
 
-package clojuresque
+package clojuresque.clojars
 
-import org.gradle.api.Plugin
-import org.gradle.api.Project
+import org.gradle.testfixtures.ProjectBuilder
 
-public class ClojarsPlugin implements Plugin<Project> {
-    void apply(Project project) {
-        project.apply plugin: "maven"
+import spock.lang.Specification
 
-        project.extensions.create("clojars", ClojarsExtension, project)
+public class ClojarsPluginTest extends Specification {
+    def project = ProjectBuilder.builder().build()
 
-        project.configurations {
-            clojuresqueClojarsDeployerJars
-        }
+    def setup() {
+        project.apply plugin: "clojars"
+    }
 
-        project.dependencies {
-            clojuresqueClojarsDeployerJars 'org.apache.maven.wagon:wagon-http-lightweight:2.2'
-        }
+    def "extension is installed by the plugin"() {
+        expect:
+        project.hasProperty("clojars")
+        project.clojars instanceof ClojarsExtension
+    }
+
+    def "deployer jar configuration is installed"() {
+        expect:
+        project.configurations["clojuresqueClojarsDeployerJars"]
     }
 }

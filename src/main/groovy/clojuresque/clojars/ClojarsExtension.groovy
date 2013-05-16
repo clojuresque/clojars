@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-package clojuresque
+package clojuresque.clojars
 
 public class ClojarsExtension {
     def project

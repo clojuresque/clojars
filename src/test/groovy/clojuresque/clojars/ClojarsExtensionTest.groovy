@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-package clojuresque
+package clojuresque.clojars
 
 import org.gradle.api.tasks.Upload
 import org.gradle.testfixtures.ProjectBuilder
