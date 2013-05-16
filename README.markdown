@@ -27,14 +27,11 @@ is also provided.
 
 ## Usage
 
-    apply plugin: 'clojars'
+    apply plugin: 'clojuresque-clojars'
     
     clojars {
-        username = "your-clojars-login"
-        password = "your-clojars-password"
-
         repo(repositories)
-        deploy(uploadArchives) {
+        deploy(uploadArchives, username: "user", password: "passw0rd") {
             project {
                 licenses {
                     license {
@@ -47,6 +44,14 @@ is also provided.
             }
         }
     }
+
+## Changelog
+
+v1.1 -&gt; v1.2:
+ * Breaking change: give credentials directly to deploy call.
+   Extension properties for the purpose are removed.
+ * Plugin name "clojars" is deprecated and will go away in a future version.
+   Use "clojuresque-clojars" instead.
 
 -- 
 Meikel Brandmeyer <mb@kotka.de>
