@@ -73,13 +73,15 @@ class ClojarsExtensionTest extends Specification {
         def creds = [
             username: "user",
             password: "passw0rd",
-            url:      "http://kotka.de"
+            url:      "http://kotka.de/repo",
+            snapshotsUrl: "http://kotka.de/snapshots"
         ]
 
         when:
         project["clojuresque.clojars.username"] = creds.username
         project["clojuresque.clojars.password"] = creds.password
         project["clojuresque.clojars.url"]      = creds.url
+        project["clojuresque.clojars.snapshotsUrl"] = creds.snapshotsUrl
 
         then:
         project.clojars.credentials() == creds
