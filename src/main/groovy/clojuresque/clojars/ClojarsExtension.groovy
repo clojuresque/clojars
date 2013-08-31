@@ -51,7 +51,7 @@ class ClojarsExtension {
         if (project.hasProperty("clojuresque.clojars.url"))
             defaults.url = project["clojuresque.clojars.url"]
 
-        if (project.hasProperty("clojuresque.clojars.snapshotsUrl")
+        if (project.hasProperty("clojuresque.clojars.snapshotsUrl"))
             defaults.snapshotsUrl = project["clojuresque.clojars.snapshotsUrl"]
 
         defaults.plus(creds)
