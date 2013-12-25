@@ -3,3 +3,4 @@ syntax: glob
 build/*
 lib/*
 .gradle/*
+.gradle*
