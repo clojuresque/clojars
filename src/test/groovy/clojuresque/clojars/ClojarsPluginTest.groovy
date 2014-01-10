@@ -32,7 +32,7 @@ class ClojarsPluginTest extends Specification {
 
     def "extension is installed by the plugin"() {
         given:
-        project.apply plugin: "clojuresque-clojars"
+        project.apply plugin: "clojure-clojars"
 
         expect:
         project.hasProperty("clojars")
@@ -41,7 +41,7 @@ class ClojarsPluginTest extends Specification {
 
     def "deployer jar configuration is installed"() {
         given:
-        project.apply plugin: "clojuresque-clojars"
+        project.apply plugin: "clojure-clojars"
 
         expect:
         project.configurations["clojuresqueClojarsDeployerJars"]
