@@ -40,7 +40,7 @@ class ClojarsExtensionTest extends Specification {
         expect:
         project.
             clojars.
-            credentials(username: "user").
+            configureCredentials(username: "user").
             username == "user"
     }
 
@@ -48,7 +48,7 @@ class ClojarsExtensionTest extends Specification {
         expect:
         project.
             clojars.
-            credentials(password: "passw0rd").
+            configureCredentials(password: "passw0rd").
             password == "passw0rd"
     }
 
@@ -56,7 +56,7 @@ class ClojarsExtensionTest extends Specification {
         expect:
         project.
             clojars.
-            credentials(url: "http://kotka.de").
+            configureCredentials(url: "http://kotka.de").
             url == "http://kotka.de"
     }
 
@@ -64,7 +64,7 @@ class ClojarsExtensionTest extends Specification {
         expect:
         project.
             clojars.
-            credentials().
+            configureCredentials().
             url == "https://clojars.org/repo"
     }
 
@@ -84,7 +84,7 @@ class ClojarsExtensionTest extends Specification {
         project["clojuresque.clojars.snapshotsUrl"] = creds.snapshotsUrl
 
         then:
-        project.clojars.credentials() == creds
+        project.clojars.configureCredentials() == creds
     }
 
     def "deploy with empty user name fails"() {
@@ -92,7 +92,7 @@ class ClojarsExtensionTest extends Specification {
         def upload = project.tasks.add(name: "upload", type: Upload)
         upload.enabled = true
         project.clojars {
-            deploy(upload, password: "password")
+            deployCustom(upload, password: "password") {}
         }
 
         then:
@@ -104,7 +104,7 @@ class ClojarsExtensionTest extends Specification {
         def upload = project.tasks.add(name: "upload", type: Upload)
         upload.enabled = true
         project.clojars {
-            deploy(upload, username: "user")
+            deployCustom(upload, username: "user") {}
         }
 
         then:
@@ -116,7 +116,7 @@ class ClojarsExtensionTest extends Specification {
         def upload = project.tasks.add(name: "upload", type: Upload)
         upload.enabled = true
         project.clojars {
-            deploy(upload, username: "user", password: "passw0rd")
+            deployCustom(upload, username: "user", password: "passw0rd") {}
         }
 
         then:
@@ -130,7 +130,7 @@ class ClojarsExtensionTest extends Specification {
         project.clojars {
             username = "user"
             password = "password"
-            deploy(upload, username: "user", password: "passw0rd") {
+            deployCustom(upload, username: "user", password: "passw0rd") {
                 project {
                     description "foobar"
                 }
