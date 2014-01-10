@@ -26,6 +26,16 @@ dependencies {
     deployerJars 'org.apache.maven.wagon:wagon-http-lightweight:2.2'
 }
 
+jar {
+    into("META-INF/clojuresque/clojuresque-clojars") {
+        from(project.projectDir) {
+            include "LICENSE"
+            include "EUPL-v1.1"
+            include "MIT"
+        }
+    }
+}
+
 uploadArchives {
     repositories {
         mavenDeployer {
