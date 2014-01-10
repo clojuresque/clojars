@@ -10,7 +10,7 @@ buildscript {
 }
 
 group = 'clojuresque'
-version = '1.5.0-SNAPSHOT'
+version = '1.5.0'
 description = 'A Clojure plugin for gradle (clojars)'
 
 ext.kotka = [
